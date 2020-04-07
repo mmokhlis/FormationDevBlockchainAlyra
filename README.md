@@ -10,3 +10,9 @@ Exercice 1.1.2
 
 Exercice 1.1.3
 Réaliser un vérificateur de palindrome
+
+Exercice 1.1.4
+Construire une classe Cercle :
+
+Son constructeur prend en paramètre un rayon.
+Ses méthodes aire() et perimetre() retournent les valeurs correspondantes.
