@@ -1,0 +1,12 @@
+<h2>Voici les informations du block : <%= block %> </h2>
+
+<p><b>Date : </b><%= date %></p>
+<p><b>Hauteur : </b><%= hauteur%></p>
+<p><b>liste des identifiants des transactions :</b></p>
+<p><%
+    for(var i= 1; i<= tabHash.length; i++){
+    %>
+    <b> <%= i %> : </b><%= tabHash[i] %><br>
+
+   <% } %>
+</p>

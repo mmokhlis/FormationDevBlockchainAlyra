@@ -12,7 +12,7 @@ app.get("/status", (req,res)=>{
 })
 app.get("/:code",(req,res) => {
     //res.send(`vous avez saisi le code : ${req.params.code}`)
-    res.render('code.ejs',{code: req.params.code})
+    res.render('code.ejs',{code: req.params.code,})
     console.log('code :'+req.params.code)
 })
 

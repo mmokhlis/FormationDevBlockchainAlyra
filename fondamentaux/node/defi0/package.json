@@ -1,0 +1,17 @@
+{
+  "name": "defi0",
+  "version": "1.0.0",
+  "description": "defie zero de la formation",
+  "main": "server.js",
+  "dependencies": {
+    "ejs": "^3.0.2",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
