@@ -27,3 +27,9 @@ Renvoi une page avec quelques informations simplifiées du bock:
   <li>hauteur</li>
   <li>date</li>
   <li>Liste des identifiants des transactions</li>
+</ul>
+<h2> Exercice 1.3.1 </h2>
+Réaliser un chiffrement de César<br>
+Écrire une fonction qui chiffre un texte en paramètre étant donné une clé de décalage.
+
+chiffreCesar(“abc”, 1) ￫ “bcd”
