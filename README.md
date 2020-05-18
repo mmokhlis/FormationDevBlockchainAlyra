@@ -33,3 +33,15 @@ Réaliser un chiffrement de César<br>
 Écrire une fonction qui chiffre un texte en paramètre étant donné une clé de décalage.
 
 chiffreCesar(“abc”, 1) ￫ “bcd”
+<h2> Défi #2: Place de marché d’illustrateurs indépendants </h2>
+Créer une place de marché décentralisée pour illustrateurs indépendants. Si le sujet vous inspire, vous pouvez arrêter la lecture ici en créant une DApp avec :
+
+Un mécanisme de réputation
+
+Une liste de demandes et d’offres de services
+
+Un mécanisme de contractualisation avec dépôt préalable
+
+La suite de ce document propose le détail d’une conception possible de ce type d’application.
+
+
