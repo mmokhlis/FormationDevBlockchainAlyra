@@ -20,4 +20,5 @@ return cesar;
 
 console.log(chiffreCesar("ABCD",3));
 console.log(chiffreCesar("XYZ",3));
+console.log(chiffreCesar("ABC XYZ",3));
 
