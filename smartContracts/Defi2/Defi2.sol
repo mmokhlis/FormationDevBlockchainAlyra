@@ -48,6 +48,8 @@
           uint delai ;              //seconds
           string description;       //(champ texte)
           uint reputationMinumum;   //Définir une réputation minimum pour pouvoir postuler
+          Illustrateur candidatChoisi;
+          bytes32 hashLienLivraison;
           mapping (address => Illustrateur) candidats;
           //Illustrateur [] candidats;//Une liste de candidats
           EtatDemande etatDemande  ;//Définir une réputation minimum pour pouvoir postuler
@@ -63,9 +65,9 @@
             demande.delai = _delai;
             demande.description = _description;
             demande.reputationMinumum = _reputationMinumum;
+            demande.etatDemande = EtatDemande.OUVERTE;
             demandes[indexDemande-1]= demande;
-            //demandes.push(demande);
-            //balancesDemandeurs[msg.sender] = msg.value;
+            
         }
         ///----------------Mécanisme de contractualisation
     //Créer une fonction postuler() qui permet à un indépendant de proposer ses services. 
@@ -86,17 +88,21 @@
         require(demandes[idDemande-1].demandeur.adresseDemandeur == msg.sender," vous etes pas owner de cette demande");
         require(illustrateurs[addressCandidat].adresseIllustrateur == demandes[idDemande-1].candidats[addressCandidat].adresseIllustrateur,
         "illustrateur ne figure pas dans les candidats de cette demande");
-        
-        
-        
+        demandes[idDemande-1].candidatChoisi = illustrateurs[addressCandidat];
+        demandes[idDemande-1].etatDemande = EtatDemande.ENCOURS;
     }
 
     //Ecrire une fonction livraison() qui permet à l’illustrateur de remettre le hash du lien où se trouve son travail. 
     //Les fonds sont alors automatiquement débloqués et peuvent être retirés par l’illustrateur. 
     //L’illustrateur gagne aussi un point de réputation
-    //function livraison(){
-        ///
-    //}
+    function livraison(uint idDemande,string memory lienLivraison) public {
+        require(illustrateurs[msg.sender].adresseIllustrateur == demandes[idDemande-1].candidatChoisi.adresseIllustrateur,
+        "vous n'etes pas le candidat choisi pour cette demande");
+        bytes32 hashLienLivraison = keccak256(bytes(lienLivraison));
+        demandes[idDemande-1].hashLienLivraison = hashLienLivraison;
+        demandes[idDemande-1].etatDemande = EtatDemande.FERMEE;
+        msg.sender.transfer(demandes[idDemande-1].remuneration);
+    }
 
         
     }
