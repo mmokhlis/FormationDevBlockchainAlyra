@@ -5,7 +5,7 @@
     
     contract Defi2 {
         
-        mapping(address => uint) public balances;
+        mapping(address => uint) private balancesDemandeurs;
         
         //Mécanisme de réputation
         struct Illustrateur {
@@ -21,6 +21,7 @@
             bool estInscrit;
         }
         mapping (address => Demandeur) demandeurs;
+        address[] public demandeursAccts;
         //Lorsqu’un nouveau participant rejoint la plateforme, il appelle la fonction inscription() qui lui donne une réputation de 1. Il
         function inscription(string memory nom) public {
             // on verifie si il est membre ou pas 
@@ -30,10 +31,11 @@
             illustrateurs[msg.sender].estMembre = true;
             illustrateursAccts.push(msg.sender);
         }
-        function inscriptionDemandeur() public {
+        function inscriptionDemandeur() external {
             require(!(demandeurs[msg.sender].estInscrit),"vous êtes déja inscrit");
             demandeurs[msg.sender].estInscrit = true;
         }
+        
         enum EtatDemande { OUVERTE, ENCOURS, FERMEE } 
         struct Demande {
           Demandeur demandeur;
@@ -46,15 +48,22 @@
           EtatDemande etatDemande  ;//Définir une réputation minimum pour pouvoir postuler
         }
         Demande [] demandes;
-        function ajouterDemande(uint _remuneration, uint _delai, string memory _description, uint _reputationMinumum) public payable {
-            //require(demandeurs[msg.sender].balance >= 5 wei);
+        function ajouterDemande(uint _remuneration, uint _delai, string memory _description, uint _reputationMinumum) public payable{
+            require(msg.value >= _remuneration + (_remuneration * 2/100));
+            require(demandeurs[msg.sender].estInscrit,"inscrivez vous!");
             Demande memory demande;
             demande.remuneration = _remuneration;
             demande.delai = _delai;
             demande.description = _description;
             demande.reputationMinumum = _reputationMinumum;
             demandes.push(demande);
-    
+            balancesDemandeurs[msg.sender] = msg.value;
+        }
+        function postuler(Demande memory demande) public returns(bool success) {
+            require((illustrateurs[msg.sender].estMembre), "inscrivez vous");
+            
+            
+            
         }
         
     }
