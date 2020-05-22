@@ -57,7 +57,7 @@ loadData = async () => {
     //For loop to retrieve each demande in an array of objects
     for(let i = 0; i <= this.state.indexDemande; i++) {
   
-      const demande = await contract.methods.getDemandes(i).call();
+      const demande = await contract.methods.getDemandes().call(i);
 
       this.setState({demandes: [...this.state.demandes, {
         description: demande[i].description, 
