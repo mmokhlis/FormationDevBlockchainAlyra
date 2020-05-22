@@ -5,7 +5,7 @@ import getWeb3 from "./getWeb3";
 import "./App.css";
 
 class App extends Component {
-  state = { indexDemande, id,remuneration,delai,reputationMinumum,etatDemande, web3: null, accounts: null, contract: null };
+  state = { indexDemande : 0, demandes: [], web3: null, accounts: null, contract: null };
 
   componentDidMount = async () => {
     try {
@@ -35,9 +35,33 @@ class App extends Component {
     }
   };
 loadData = async () => {
-  const {contract } = this.state;
-  let indexDemande =await contract.indexDemande;
-  this.setState({indexDemande});
+  const { accounts, contract } = this.state;
+
+    // Stores a given values by default.
+    await contract.methods.ajouterDemande(10, 3000, "Logo nouvelle gamme", 4).send({ from: accounts[0] });
+
+    // Get the value from the contract to prove it worked.
+    const response = await contract.methods.indexDemande.call();
+    
+    // Update state with the result.
+    this.setState({ indexDemande: response });
+    
+    //For loop to retrieve each demande in an array of objects
+    for(let i = 0; i <= this.state.indexDemande; i++) {
+  
+      const demande = await contract.methods.getDemandes().call();
+
+      this.setState({demandes: [...this.state.demandes, {
+        description: demande[i].description, 
+        id:demande[i].id, 
+        remuneration: demande[i].remuneration, 
+        delais: demande[i].delais, 
+        reputation: demande[i].reputation, 
+        etat: demande[i].etat
+        }]}
+      )
+      
+    }
 }
   // runExample = async () => {
   //   const { accounts, contract } = this.state;
@@ -56,13 +80,48 @@ loadData = async () => {
     if (!this.state.web3) {
       return <div>Loading Web3, accounts, and contract...</div>;
     }
+    const { demandes } = this.state;
+    /*const createData = (description, id, remuneration, delais, reputation, etat) => {
+      return { description, id, remuneration, delais, reputation, etat };
+    }
+    /*const {description, id, remuneration, delais, reputation, etat } = this.state.demandes[i];
+    const rows = [
+      for(let i = 0; i <= this.state.indexDemande; i++) {
+        return createData(description, id, remuneration, delais, reputation, etat)
+      } 
+    ];*/
+    
     return (
       <div className="App">
-        <h1>Bonjour!</h1>
-        <div>le nombre des demandes est : {this.state.indexDemande}</div>
+        <TableContainer component={Paper}>
+      <Table aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Description</TableCell>
+            <TableCell align="right">ID</TableCell>
+            <TableCell align="right">Rémunération</TableCell>
+            <TableCell align="right">Délais</TableCell>
+            <TableCell align="right">Réputation minimum</TableCell>
+            <TableCell align="right">Etat de la demande</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {demandes.map((demande) => (
+            <TableRow key={demande.description}>
+              <TableCell component="th" scope="row">
+                {demande.description}
+              </TableCell>
+              <TableCell align="right">{demande.id}</TableCell>
+              <TableCell align="right">{demande.remuneration}</TableCell>
+              <TableCell align="right">{demande.delais}</TableCell>
+              <TableCell align="right">{demande.reputation}</TableCell>
+              <TableCell align="right">{demande.etat}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
       </div>
     );
   }
 }
-
-export default App;
